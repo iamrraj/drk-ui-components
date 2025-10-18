@@ -1,0 +1,146 @@
+name: Feature Request
+description: Suggest a new feature or enhancement for DRK UI Components
+title: "[Feature]: "
+labels: ["enhancement", "needs-triage"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting a new feature! We appreciate your input in making DRK UI Components better.
+
+  - type: dropdown
+    id: feature-type
+    attributes:
+      label: Feature Type
+      description: What type of feature are you requesting?
+      options:
+        - New Component
+        - Enhancement to Existing Component
+        - New Prop/API
+        - Accessibility Improvement
+        - Performance Improvement
+        - Documentation
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: component
+    attributes:
+      label: Related Component (if applicable)
+      description: Which component does this feature relate to?
+      options:
+        - Button
+        - Input
+        - Select
+        - Textarea
+        - Checkbox
+        - Radio
+        - Switch
+        - Slider
+        - Badge
+        - Avatar
+        - Card
+        - Alert
+        - Modal
+        - Tooltip
+        - Tabs
+        - Accordion
+        - Dropdown
+        - N/A - New Component
+        - N/A - General
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem Statement
+      description: Is your feature request related to a problem? Please describe.
+      placeholder: I'm always frustrated when...
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: Describe the solution you'd like
+      placeholder: I would like to see...
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: Describe any alternative solutions or features you've considered
+      placeholder: I've also considered...
+
+  - type: textarea
+    id: examples
+    attributes:
+      label: Examples & Inspiration
+      description: Provide examples from other libraries or links that inspired this feature
+      placeholder: |
+        Similar to Material-UI's approach:
+        https://mui.com/components/...
+
+  - type: textarea
+    id: api-design
+    attributes:
+      label: Proposed API/Usage (if applicable)
+      description: How would you like to use this feature?
+      render: tsx
+      placeholder: |
+        import { NewComponent } from 'drk-ui-components';
+
+        <NewComponent
+          prop1="value"
+          prop2={true}
+        />
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      description: How important is this feature to you?
+      options:
+        - Nice to have
+        - Would be helpful
+        - Important
+        - Critical
+    validations:
+      required: true
+
+  - type: dropdown
+    id: breaking-change
+    attributes:
+      label: Breaking Change
+      description: Would this require a breaking change?
+      options:
+        - "No"
+        - "Yes"
+        - "Not sure"
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Add any other context, screenshots, or mockups about the feature request
+      placeholder: Any additional information...
+
+  - type: checkboxes
+    id: contribution
+    attributes:
+      label: Contribution
+      options:
+        - label: I would be willing to contribute this feature via a Pull Request
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checks
+      options:
+        - label: I have searched for similar feature requests before creating this one
+          required: true

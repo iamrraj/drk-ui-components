@@ -1,0 +1,11 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Documentation
+    url: https://github.com/iamrraj/drk-ui-components#readme
+    about: Check out our comprehensive documentation and examples
+  - name: Discussions
+    url: https://github.com/iamrraj/drk-ui-components/discussions
+    about: Ask questions and discuss ideas with the community
+  - name: npm Package
+    url: https://www.npmjs.com/package/drk-ui-components
+    about: View package on npm registry
