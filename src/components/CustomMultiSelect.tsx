@@ -6,6 +6,7 @@ import React, {
   useState,
 } from "react";
 import { BiChevronDown, BiChevronUp } from "react-icons/bi";
+import { createPortal } from "react-dom";
 import Label from "./Label";
 import Paragraph from "./Paragraph";
 import Card from "./Card";
@@ -185,13 +186,27 @@ const CustomMultiSelect: React.FC<CustomMultiSelectProps> = ({
 
   // Calculate dropdown position when it opens
   useEffect(() => {
-    if (isOpen && triggerRef.current) {
-      const rect = triggerRef.current.getBoundingClientRect();
-      setDropdownPosition({
-        top: rect.bottom + window.scrollY,
-        left: rect.left + window.scrollX,
-        width: rect.width,
-      });
+    const updatePosition = () => {
+      if (isOpen && triggerRef.current) {
+        const rect = triggerRef.current.getBoundingClientRect();
+        setDropdownPosition({
+          top: rect.bottom + window.scrollY, // Position directly below the trigger
+          left: rect.left + window.scrollX,
+          width: rect.width,
+        });
+      }
+    };
+
+    updatePosition();
+
+    if (isOpen) {
+      window.addEventListener("scroll", updatePosition, true);
+      window.addEventListener("resize", updatePosition);
+
+      return () => {
+        window.removeEventListener("scroll", updatePosition, true);
+        window.removeEventListener("resize", updatePosition);
+      };
     }
   }, [isOpen]);
 
@@ -241,7 +256,9 @@ const CustomMultiSelect: React.FC<CustomMultiSelectProps> = ({
     if (selectedNames.length === 1 || !multiple) {
       return selectedNames[0];
     } else {
-      return `${selectedNames[0]} <span class='text-primary-500 ml-1 font-bold'>+${
+      return `${
+        selectedNames[0]
+      } <span class='text-primary-500 ml-1 font-bold'>+${
         selectedNames.length - 1
       } more</span>`;
     }
@@ -259,9 +276,9 @@ const CustomMultiSelect: React.FC<CustomMultiSelectProps> = ({
       <Label>{label}</Label>
       <Button
         onClick={toggleDropdown}
-        className={`border shadow-sm focus:border-primary-500 h-10 py-2 w-full border-gray-300 text-black text-left rounded-lg focus:outline-none flex items-center justify-between ${
-          classes ? classes : "bg-white"
-        }`}
+        className={`${
+          classes || "bg-white"
+        } border shadow-sm focus:border-primary-500 h-10 py-2 w-full border-gray-300 text-black text-left rounded-lg focus:outline-none flex items-center justify-between`}
       >
         <p
           className={`${
@@ -274,53 +291,53 @@ const CustomMultiSelect: React.FC<CustomMultiSelectProps> = ({
         </Card>
       </Button>
 
-      {isOpen && (
-        <div
-          ref={dropdownRef}
-          className="bg-white border min-w-[200px] max-w-full w-full border-gray-300 rounded-lg shadow-lg z-50"
-          style={{
-            position: "fixed",
-            top: `${dropdownPosition.top}px`,
-            left: `${dropdownPosition.left}px`,
-            width: `${dropdownPosition.width}px`,
-          }}
-        >
-          <input
-            type="text"
-            placeholder="Search..."
-            value={searchTerm}
-            onChange={handleInputChange}
-            className="w-full px-4 py-2 border-b border-gray-300 bg-white text-black focus:outline-none"
-          />
+      {isOpen &&
+        createPortal(
+          <div
+            ref={dropdownRef}
+            className="bg-white border min-w-[200px] max-w-full w-full border-gray-300 rounded-lg shadow-lg z-50"
+            style={{
+              position: "fixed",
+              top: `${dropdownPosition.top}px`,
+              left: `${dropdownPosition.left}px`,
+              width: `${dropdownPosition.width}px`,
+            }}
+          >
+            <input
+              type="text"
+              placeholder="Search..."
+              value={searchTerm}
+              onChange={handleInputChange}
+              className="w-full px-4 py-2 border-b border-gray-300 bg-white text-black focus:outline-none"
+            />
 
-          <Card className="max-h-60 overflow-y-auto mt-2">
-            {filteredOptions?.length > 0 ? (
-              filteredOptions?.map((option) => (
-                <Card
-                  key={option.id}
-                  className="flex px-3 text-gray-800 items-center gap-2 py-1.5 hover:bg-gray-50"
-                >
-                  <input
-                    type="checkbox"
-                    aria-label={option.name}
-                    checked={selectedItems.includes(option.id)}
-                    onChange={() => handleSelection(option.id)}
-                    disabled={!multiple && selectedItems.includes(option.id)}
-                    className="cursor-pointer"
-                  />
-                  <label className="cursor-pointer flex-1">
-                    {option.name}
-                  </label>
-                </Card>
-              ))
-            ) : (
-              <Paragraph className="p-2 text-gray-800">
-                No options found
-              </Paragraph>
-            )}
-          </Card>
-        </div>
-      )}
+            <Card className="max-h-60 overflow-y-auto mt-2">
+              {filteredOptions?.length > 0 ? (
+                filteredOptions?.map((option) => (
+                  <Card
+                    key={option.id}
+                    className="flex px-3 text-gray-800 items-center gap-2 py-1.5 hover:bg-gray-50 cursor-pointer"
+                  >
+                    <input
+                      type="checkbox"
+                      aria-label={option.name}
+                      checked={selectedItems.includes(option.id)}
+                      onChange={() => handleSelection(option.id)}
+                      disabled={!multiple}
+                      className="cursor-pointer"
+                    />
+                    <label className="cursor-pointer flex-1">{option.name}</label>
+                  </Card>
+                ))
+              ) : (
+                <Paragraph className="p-2 text-gray-800">
+                  No options found
+                </Paragraph>
+              )}
+            </Card>
+          </div>,
+          document.body
+        )}
     </div>
   );
 };

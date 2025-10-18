@@ -2,6 +2,18 @@
 
 This directory contains comprehensive examples demonstrating all components in the DRK UI Components library.
 
+## 🎮 Live Preview
+
+**[View All Components Live →](https://drk-ui-components.vercel.app/)**
+
+See all components in action with interactive examples, dark/light theme toggle, and copy-ready code snippets.
+
+## 📚 Full Documentation
+
+**[Complete Documentation →](https://drk-ui-components.vercel.app/)**
+
+Access comprehensive documentation with API reference, usage guides, and interactive examples for all components.
+
 ## Running the Examples
 
 ### Option 1: Copy to Your Project
@@ -203,10 +215,30 @@ function DropdownExamples() {
         className="w-full"
         placeholder="Full width"
       />
+
+      {/* Custom styled dropdown - user classes take priority */}
+      <Dropdown
+        options={countries}
+        selectedOption={selected}
+        onSelect={setSelected}
+        className="bg-gray-50 hover:bg-gray-100"
+        placeholder="Custom background"
+      />
+
+      {/* Custom themed dropdown */}
+      <Dropdown
+        options={countries}
+        selectedOption={selected}
+        onSelect={setSelected}
+        className="bg-blue-50 border-blue-300"
+        placeholder="Blue themed"
+      />
     </>
   );
 }
 ```
+
+**Note on Custom Styling:** The `className` prop allows complete customization. User-provided classes take priority over defaults, enabling you to override background colors, borders, padding, and any other styles.
 
 ### 4. CustomMultiSelect Examples
 
@@ -255,10 +287,32 @@ function MultiSelectExamples() {
         label="Custom Styled"
         classes="bg-gray-50"
       />
+
+      {/* Blue themed multi-select - user classes take priority */}
+      <CustomMultiSelect
+        options={options}
+        selectedItems={selected}
+        onSelect={setSelected}
+        label="Blue Themed"
+        placeholder="Select options"
+        classes="bg-blue-50 hover:bg-blue-100 border-blue-300"
+      />
+
+      {/* Purple themed with custom colors */}
+      <CustomMultiSelect
+        options={options}
+        selectedItems={selected}
+        onSelect={setSelected}
+        label="Purple Theme"
+        multiple={true}
+        classes="bg-purple-50 hover:bg-purple-100"
+      />
     </>
   );
 }
 ```
+
+**Note on Custom Styling:** The `classes` prop allows complete customization. User-provided classes take priority over defaults, giving you full control over the component's appearance including backgrounds, borders, hover states, and more.
 
 ### 5. Modal Examples
 

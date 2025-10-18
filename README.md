@@ -5,6 +5,18 @@ A comprehensive React component library built with TypeScript and Tailwind CSS. 
 [![npm version](https://img.shields.io/npm/v/drk-ui-components.svg)](https://www.npmjs.com/package/drk-ui-components)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
+## 🎮 Live Demo
+
+**[View Interactive Demo →](https://drk-ui-components.vercel.app/)**
+
+Try out all components with live examples, dark/light theme toggle, and copy-ready code snippets.
+
+## 📚 Documentation
+
+**[Complete Documentation →](https://drk-ui-components.vercel.app/)**
+
+Comprehensive documentation with interactive examples, API reference, and usage guides for all components.
+
 ## Features
 
 ✨ **17+ Production-Ready Components** - All the essentials for building modern web applications
@@ -79,7 +91,7 @@ Update your `postcss.config.js`:
 ```javascript
 export default {
   plugins: {
-    '@tailwindcss/postcss': {},
+    "@tailwindcss/postcss": {},
     autoprefixer: {},
   },
 };
@@ -266,11 +278,13 @@ function CountrySelector() {
       selectedOption={selected}
       onSelect={setSelected}
       placeholder="Select a country"
-      className="w-full"
+      className="bg-gray-50" // Custom background - user classes take priority
     />
   );
 }
 ```
+
+**Customization Note:** The `className` prop allows full customization. User-provided classes take priority over defaults, so you can override any styling including background colors, borders, padding, etc.
 
 ### CustomMultiSelect
 
@@ -296,10 +310,13 @@ function FrameworkSelector() {
       label="Select Frameworks"
       placeholder="Choose frameworks"
       multiple={true}
+      classes="bg-blue-50 hover:bg-blue-100" // Custom styling - user classes take priority
     />
   );
 }
 ```
+
+**Customization Note:** The `classes` prop allows full customization. User-provided classes take priority over defaults, enabling complete control over the component's appearance.
 
 ### Modal
 
@@ -586,14 +603,22 @@ function MyComponent() {
 All components are fully typed. Import types using the `import type` syntax:
 
 ```tsx
-import type { ButtonProps, InputProps, DropdownOption } from "drk-ui-components";
+import type {
+  ButtonProps,
+  InputProps,
+  DropdownOption,
+} from "drk-ui-components";
 ```
 
 Or import components and types separately:
 
 ```tsx
 import { Button, Input, Dropdown } from "drk-ui-components";
-import type { ButtonProps, InputProps, DropdownOption } from "drk-ui-components";
+import type {
+  ButtonProps,
+  InputProps,
+  DropdownOption,
+} from "drk-ui-components";
 ```
 
 ## Styling
@@ -631,6 +656,14 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 MIT © DRK
 
 ## Changelog
+
+### v1.0.4
+
+- **Enhanced Dropdown & CustomMultiSelect** with React Portal rendering
+- Menu positioning improved - opens directly under input
+- User classes now take priority over defaults for better customization
+- Updated documentation with custom styling examples
+- Added new live demo link
 
 ### v1.0.2
 

@@ -229,13 +229,27 @@ const Dropdown: React.FC<DropdownProps> = ({
 
   // Calculate dropdown position when it opens
   useEffect(() => {
-    if (isDropdownOpen && triggerRef.current) {
-      const rect = triggerRef.current.getBoundingClientRect();
-      setDropdownPosition({
-        top: rect.bottom + window.scrollY,
-        left: rect.left + window.scrollX,
-        width: rect.width,
-      });
+    const updatePosition = () => {
+      if (isDropdownOpen && triggerRef.current) {
+        const rect = triggerRef.current.getBoundingClientRect();
+        setDropdownPosition({
+          top: rect.bottom + window.scrollY, // Position directly below the trigger
+          left: rect.left + window.scrollX,
+          width: rect.width,
+        });
+      }
+    };
+
+    updatePosition();
+
+    if (isDropdownOpen) {
+      window.addEventListener('scroll', updatePosition, true);
+      window.addEventListener('resize', updatePosition);
+
+      return () => {
+        window.removeEventListener('scroll', updatePosition, true);
+        window.removeEventListener('resize', updatePosition);
+      };
     }
   }, [isDropdownOpen]);
 
@@ -292,8 +306,8 @@ const Dropdown: React.FC<DropdownProps> = ({
               option?.label === selectedOption?.label
                 ? "bg-primary-500 text-white"
                 : highlightedIndex === index
-                ? "bg-primary-200"
-                : "hover:bg-primary-100"
+                ? "bg-primary-500"
+                : "hover:bg-primary-200"
             }`}
           >
             {option.label}
@@ -307,11 +321,13 @@ const Dropdown: React.FC<DropdownProps> = ({
     <>
       <div
         ref={triggerRef}
-        className={`relative w-full ${className}`}
+        className="relative w-full"
         data-testid={`dropdown-${placeholder}`}
       >
         <div
-          className={`border shadow-sm py-2 w-full focus-within:border-primary-500 border-gray-300 text-black text-left rounded-lg flex items-center justify-between bg-white h-10 ${
+          className={`${
+            className || "bg-white"
+          } border shadow-sm py-2 w-full focus-within:border-primary-500 border-gray-300 text-black text-left rounded-lg flex items-center justify-between h-10 ${
             disabled ? "opacity-50 cursor-not-allowed" : ""
           }`}
         >

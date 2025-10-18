@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.4] - 2025-10-18
+
+### Enhanced
+
+- **Dropdown Component** - Improved with React Portal rendering for better z-index handling
+  - Menu now renders directly under input with no gap
+  - Fixed positioning issues in complex layouts
+  - User-provided `className` now takes priority over default styles
+
+- **CustomMultiSelect Component** - Enhanced with React Portal rendering
+  - Dropdown menu opens directly under trigger input
+  - Better scroll and resize handling
+  - User-provided `classes` prop now takes priority over defaults
+  - Improved cursor styles on menu items
+
+### Documentation
+
+- Updated README with new live demo link
+- Added customization examples showing user classes taking priority
+- Enhanced examples in `examples/EXAMPLES.md` with custom styling demonstrations
+- Added live preview link to examples directory
+
 ## [1.0.2] - 2025-10-18
 
 ### Fixed
