@@ -1,0 +1,22 @@
+# Source files
+src/
+examples/
+
+# Config files
+rollup.config.js
+tsconfig.json
+postcss.config.js
+.gitignore
+
+# Documentation (except README.md)
+PUBLISHING.md
+PROPS_REFERENCE.md
+CHANGELOG.md
+
+# Build artifacts
+*.map
+node_modules/
+.DS_Store
+
+# Lock files
+package-lock.json
