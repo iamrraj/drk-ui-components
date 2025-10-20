@@ -40,13 +40,13 @@ Comprehensive documentation with interactive examples, API reference, and usage 
 ## Installation
 
 ```bash
-npm install drk-ui-components react react-dom
+npm install @iamrraj/drk-ui-components react react-dom
 ```
 
 or
 
 ```bash
-yarn add drk-ui-components react react-dom
+yarn add @iamrraj/drk-ui-components react react-dom
 ```
 
 ### Peer Dependencies
@@ -72,7 +72,7 @@ The library uses these icon libraries (already included):
 Import the component library CSS in your main entry file (e.g., `main.tsx`):
 
 ```tsx
-import "@iamrraj/drk-ui-components/dist/index.css";
+import "@iamrraj/@iamrraj/drk-ui-components/dist/index.css";
 import "./index.css"; // Your app's CSS
 ```
 
@@ -127,7 +127,7 @@ export default {
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
-    "./node_modules/@iamrraj/drk-ui-components/**/*.{js,jsx}", // Required!
+    "./node_modules/@iamrraj/@iamrraj/drk-ui-components/**/*.{js,jsx}", // Required!
   ],
 };
 ```
@@ -137,13 +137,13 @@ export default {
 Override the default primary color in your Tailwind configuration:
 
 ```javascript
-import drkConfig from "drk-ui-components/tailwind.config.js";
+import drkConfig from "@iamrraj/drk-ui-components/tailwind.config.js";
 
 export default {
   ...drkConfig,
   content: [
     "./src/**/*.{js,ts,jsx,tsx}",
-    "./node_modules/drk-ui-components/**/*.{js,ts,jsx,tsx}",
+    "./node_modules/@iamrraj/drk-ui-components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {
@@ -212,7 +212,7 @@ For detailed prop information for all components, see [PROPS_REFERENCE.md](./PRO
 ### Button
 
 ```tsx
-import { Button } from "drk-ui-components";
+import { Button } from "@iamrraj/drk-ui-components";
 
 function App() {
   return (
@@ -236,7 +236,7 @@ function App() {
 ### Input
 
 ```tsx
-import { Input } from "drk-ui-components";
+import { Input } from "@iamrraj/drk-ui-components";
 import { useState } from "react";
 
 function LoginForm() {
@@ -259,8 +259,8 @@ function LoginForm() {
 ### Dropdown
 
 ```tsx
-import { Dropdown } from "drk-ui-components";
-import type { DropdownOption } from "drk-ui-components";
+import { Dropdown } from "@iamrraj/drk-ui-components";
+import type { DropdownOption } from "@iamrraj/drk-ui-components";
 import { useState } from "react";
 
 function CountrySelector() {
@@ -289,7 +289,7 @@ function CountrySelector() {
 ### CustomMultiSelect
 
 ```tsx
-import { CustomMultiSelect } from "drk-ui-components";
+import { CustomMultiSelect } from "@iamrraj/drk-ui-components";
 import { useState } from "react";
 
 function FrameworkSelector() {
@@ -321,7 +321,7 @@ function FrameworkSelector() {
 ### Modal
 
 ```tsx
-import { Modal, Button, Input } from "drk-ui-components";
+import { Modal, Button, Input } from "@iamrraj/drk-ui-components";
 import { useState } from "react";
 
 function EditProfile() {
@@ -362,7 +362,7 @@ function EditProfile() {
 ### ConfirmationModal
 
 ```tsx
-import { ConfirmationModal, Button } from "drk-ui-components";
+import { ConfirmationModal, Button } from "@iamrraj/drk-ui-components";
 import { useState } from "react";
 
 function DeleteButton() {
@@ -397,7 +397,7 @@ function DeleteButton() {
 ### Toggle
 
 ```tsx
-import { Toggle } from "drk-ui-components";
+import { Toggle } from "@iamrraj/drk-ui-components";
 import { useState } from "react";
 
 function Settings() {
@@ -417,7 +417,7 @@ function Settings() {
 ### Badge
 
 ```tsx
-import { Badge } from "drk-ui-components";
+import { Badge } from "@iamrraj/drk-ui-components";
 
 function StatusIndicator() {
   return (
@@ -435,7 +435,7 @@ function StatusIndicator() {
 ### TooltipWrapper
 
 ```tsx
-import { TooltipWrapper, Button } from "drk-ui-components";
+import { TooltipWrapper, Button } from "@iamrraj/drk-ui-components";
 
 function ActionButtons() {
   return (
@@ -467,7 +467,7 @@ import {
   Button,
   Card,
   Heading,
-} from "drk-ui-components";
+} from "@iamrraj/drk-ui-components";
 import { useState } from "react";
 
 function CompleteForm() {
@@ -556,7 +556,7 @@ function CompleteForm() {
 ### Toast Notifications
 
 ```tsx
-import { ToastProvider, useToast } from "@iamrraj/drk-ui-components";
+import { ToastProvider, useToast } from "@iamrraj/@iamrraj/drk-ui-components";
 
 // Wrap your app with ToastProvider
 function App() {
@@ -607,18 +607,18 @@ import type {
   ButtonProps,
   InputProps,
   DropdownOption,
-} from "drk-ui-components";
+} from "@iamrraj/drk-ui-components";
 ```
 
 Or import components and types separately:
 
 ```tsx
-import { Button, Input, Dropdown } from "drk-ui-components";
+import { Button, Input, Dropdown } from "@iamrraj/drk-ui-components";
 import type {
   ButtonProps,
   InputProps,
   DropdownOption,
-} from "drk-ui-components";
+} from "@iamrraj/drk-ui-components";
 ```
 
 ## Styling
@@ -688,4 +688,4 @@ MIT © DRK
 
 ## Support
 
-For issues and questions, please open an issue on [GitHub](https://github.com/your-username/drk-ui-components/issues).
+For issues and questions, please open an issue on [GitHub](https://github.com/your-username/@iamrraj/drk-ui-components/issues).
