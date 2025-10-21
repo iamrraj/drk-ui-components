@@ -243,12 +243,12 @@ const Dropdown: React.FC<DropdownProps> = ({
     updatePosition();
 
     if (isDropdownOpen) {
-      window.addEventListener('scroll', updatePosition, true);
-      window.addEventListener('resize', updatePosition);
+      window.addEventListener("scroll", updatePosition, true);
+      window.addEventListener("resize", updatePosition);
 
       return () => {
-        window.removeEventListener('scroll', updatePosition, true);
-        window.removeEventListener('resize', updatePosition);
+        window.removeEventListener("scroll", updatePosition, true);
+        window.removeEventListener("resize", updatePosition);
       };
     }
   }, [isDropdownOpen]);
@@ -326,8 +326,9 @@ const Dropdown: React.FC<DropdownProps> = ({
       >
         <div
           className={`${
-            className || "bg-white"
-          } border shadow-sm py-2 w-full focus-within:border-primary-500 border-gray-300 text-black text-left rounded-lg flex items-center justify-between h-10 ${
+            className ||
+            "bg-white rounded-lg shadow-sm focus-within:border-primary-500 border-gray-300"
+          } border  py-2 w-full  text-black text-left  flex items-center justify-between h-10 ${
             disabled ? "opacity-50 cursor-not-allowed" : ""
           }`}
         >

@@ -29,6 +29,11 @@ interface TooltipProps {
    * @default "top"
    */
   position?: TooltipPosition;
+
+  /**
+   * Additional CSS classes for the tooltip
+   */
+  className?: string;
 }
 
 /**
@@ -43,6 +48,7 @@ const Tooltip: React.FC<TooltipProps> = ({
   content,
   isVisible,
   position = "top",
+  className = "",
 }) => {
   if (!isVisible) return null;
 
@@ -75,7 +81,7 @@ const Tooltip: React.FC<TooltipProps> = ({
 
   return (
     <div
-      className={`absolute ${positionClass} bg-gray-800 text-white text-xs rounded py-1 px-2 whitespace-nowrap z-[100]`}
+      className={`absolute ${positionClass} bg-gray-800 text-white text-xs rounded py-1 px-2 whitespace-nowrap z-[100] ${className}`}
     >
       <div className={arrowClass} />
       <div>{content}</div>
@@ -114,6 +120,16 @@ export interface TooltipWrapperProps {
    * @default "top"
    */
   placement?: TooltipPosition;
+
+  /**
+   * Additional CSS classes for the wrapper container
+   */
+  className?: string;
+
+  /**
+   * Additional CSS classes for the tooltip itself
+   */
+  tooltipClassName?: string;
 }
 
 /**
@@ -157,12 +173,14 @@ const TooltipWrapper: React.FC<TooltipWrapperProps> = ({
   children,
   tooltipContent,
   placement = "top",
+  className = "",
+  tooltipClassName = "",
 }) => {
   const [showTooltip, setShowTooltip] = useState(false);
 
   return (
     <div
-      className="relative inline-block"
+      className={`relative inline-block ${className}`}
       data-testid="tooltip-trigger"
       onMouseEnter={() => setShowTooltip(true)}
       onMouseLeave={() => setShowTooltip(false)}
@@ -172,6 +190,7 @@ const TooltipWrapper: React.FC<TooltipWrapperProps> = ({
         content={tooltipContent}
         isVisible={showTooltip}
         position={placement}
+        className={tooltipClassName}
       />
     </div>
   );

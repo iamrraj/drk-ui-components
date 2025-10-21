@@ -19,7 +19,7 @@ Comprehensive documentation with interactive examples, API reference, and usage 
 
 ## Features
 
-✨ **17+ Production-Ready Components** - All the essentials for building modern web applications
+✨ **32+ Production-Ready Components** - Complete UI toolkit for modern web applications
 
 🎨 **Tailwind CSS Support** - Full customization with utility classes
 
@@ -35,7 +35,13 @@ Comprehensive documentation with interactive examples, API reference, and usage 
 
 🔔 **Toast Notifications** - Beautiful notification system with provider pattern
 
-🚀 **Lightweight** - Only 45 kB package size (191 kB unpacked) for fast installations
+🧭 **Advanced Sidebar** - Collapsible navigation with nested menus
+
+⚡ **Loading States** - Spinners, skeletons, and progress bars
+
+🎪 **Form Components** - Checkboxes, radios, and more
+
+🚀 **Lightweight** - Only ~50 kB package size for fast installations
 
 ## Installation
 
@@ -72,7 +78,7 @@ The library uses these icon libraries (already included):
 Import the component library CSS in your main entry file (e.g., `main.tsx`):
 
 ```tsx
-import "@iamrraj/@iamrraj/drk-ui-components/dist/index.css";
+import "@iamrraj/drk-ui-components/dist/index.css";
 import "./index.css"; // Your app's CSS
 ```
 
@@ -181,11 +187,21 @@ export default {
 - **Span** - Inline text component
 - **Badge** - Status indicators and labels
 
-### Interactive Components
+### Form Components
 
 - **Toggle** - On/off switch component
+- **Textarea** - Multi-line text input with validation
+- **Slider** - Range slider for numeric inputs
+- **Checkbox** - Checkbox input with label and helper text
+- **Radio** - Radio button with label and helper text
 - **Dropdown** - Single-select dropdown with search
 - **CustomMultiSelect** - Multi-select dropdown with filtering
+
+### Navigation Components
+
+- **Sidebar** - Collapsible sidebar with nested menu, logo, user section, and settings
+- **Pagination** - Page navigation with customizable display
+- **Tabs** - Tab navigation with icons and disabled states
 
 ### Modal Components
 
@@ -195,13 +211,33 @@ export default {
 ### Tooltip Components
 
 - **Tooltip** - Info icon with hover tooltip
-- **TooltipWrapper** - Wrap any element with tooltip
+- **TooltipWrapper** - Wrap any element with tooltip (now with className support)
 
 ### Toast Components
 
 - **Toast** - Toast notification with auto-dismiss
 - **ToastProvider** - Provider for toast notifications
 - **useToast** - Hook for triggering toasts
+
+### Loading & Feedback Components
+
+- **Spinner** - Loading spinner with multiple sizes
+- **Skeleton** - Loading placeholder with pulse animation
+- **Progress** - Progress bar with percentage
+- **Alert** - Alert/banner with variants (info, success, warning, error)
+
+### Display Components
+
+- **Avatar** - User avatar with image, initials, or icon fallback
+- **Divider** - Content separator (horizontal/vertical)
+
+### Layout Components
+
+- **Accordion** - Collapsible content panels with single/multiple open
+
+### Data Display Components
+
+- **Table** - Data table with sorting and custom rendering
 
 ## Complete Props Reference
 
@@ -556,7 +592,7 @@ function CompleteForm() {
 ### Toast Notifications
 
 ```tsx
-import { ToastProvider, useToast } from "@iamrraj/@iamrraj/drk-ui-components";
+import { ToastProvider, useToast } from "@iamrraj/drk-ui-components";
 
 // Wrap your app with ToastProvider
 function App() {
@@ -593,6 +629,510 @@ function MyComponent() {
       <button onClick={handleError}>Show Error</button>
       <button onClick={handleWarning}>Show Warning</button>
       <button onClick={handleInfo}>Show Info</button>
+    </div>
+  );
+}
+```
+
+### Sidebar
+
+```tsx
+import { Sidebar } from "@iamrraj/drk-ui-components";
+import { BiHome, BiUser, BiFolder, BiChart, BiSettings, BiCog, BiLogOut } from "react-icons/bi";
+import { useState } from "react";
+
+function App() {
+  const [collapsed, setCollapsed] = useState(false);
+  const [activePath, setActivePath] = useState("/dashboard");
+
+  const menuItems = [
+    {
+      id: "1",
+      label: "Dashboard",
+      icon: <BiHome />,
+      url: "/dashboard",
+      active: activePath === "/dashboard",
+    },
+    {
+      id: "2",
+      label: "Users",
+      icon: <BiUser />,
+      badge: 12,
+      children: [
+        { id: "2-1", label: "All Users", url: "/users" },
+        { id: "2-2", label: "Add User", url: "/users/new" },
+        { id: "2-3", label: "User Roles", url: "/users/roles" },
+      ],
+    },
+    {
+      id: "3",
+      label: "Projects",
+      icon: <BiFolder />,
+      url: "/projects",
+      badge: "NEW",
+    },
+    {
+      id: "4",
+      label: "Analytics",
+      icon: <BiChart />,
+      url: "/analytics",
+      divider: true,
+    },
+    {
+      id: "5",
+      label: "Settings",
+      icon: <BiSettings />,
+      url: "/settings",
+    },
+  ];
+
+  const user = {
+    name: "John Doe",
+    email: "john@example.com",
+    avatar: "https://example.com/avatar.jpg",
+    initials: "JD",
+    role: "Admin",
+  };
+
+  // Custom user menu items (v1.0.7+)
+  const userMenuItems = [
+    {
+      id: "profile",
+      label: "View Profile",
+      icon: <BiUser />,
+      onClick: () => console.log("Profile clicked"),
+    },
+    {
+      id: "settings",
+      label: "Settings",
+      icon: <BiCog />,
+      onClick: () => console.log("Settings clicked"),
+      divider: true,
+    },
+    {
+      id: "logout",
+      label: "Logout",
+      icon: <BiLogOut />,
+      onClick: () => console.log("Logout clicked"),
+      destructive: true, // Red styling for destructive actions
+    },
+  ];
+
+  return (
+    <div className="flex h-screen">
+      <Sidebar
+        logo={<img src="/logo.png" alt="Logo" className="h-8" />}
+        menuItems={menuItems}
+        user={user}
+        userMenuItems={userMenuItems} // Custom user dropdown menu
+        collapsed={collapsed}
+        onCollapse={setCollapsed}
+        onNavigate={(url) => {
+          console.log("Navigate to:", url);
+          setActivePath(url);
+        }}
+      />
+      <main className="flex-1 p-8">{/* Your content */}</main>
+    </div>
+  );
+}
+```
+
+### Spinner
+
+```tsx
+import { Spinner } from "@iamrraj/drk-ui-components";
+
+function LoadingPage() {
+  return (
+    <div className="flex justify-center items-center min-h-screen">
+      <Spinner size="lg" />
+    </div>
+  );
+}
+
+// Inline loading
+function SubmitButton() {
+  const [loading, setLoading] = useState(false);
+
+  return (
+    <button className="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded">
+      {loading && <Spinner size="sm" color="border-white" />}
+      {loading ? "Saving..." : "Save"}
+    </button>
+  );
+}
+```
+
+### Skeleton
+
+```tsx
+import { Skeleton } from "@iamrraj/drk-ui-components";
+
+function UserCardLoading() {
+  return (
+    <div className="p-4 border rounded-lg">
+      <Skeleton circle width="4rem" height="4rem" />
+      <Skeleton width="200px" className="mt-4" />
+      <Skeleton count={3} className="mt-2" />
+    </div>
+  );
+}
+```
+
+### Avatar
+
+```tsx
+import { Avatar } from "@iamrraj/drk-ui-components";
+
+function UserList() {
+  return (
+    <div className="flex items-center gap-3">
+      <Avatar
+        src="https://example.com/avatar.jpg"
+        alt="John Doe"
+        size="lg"
+      />
+      <Avatar initials="JD" size="md" className="bg-blue-500" />
+      <Avatar initials="AB" size="sm" className="bg-gradient-to-r from-purple-500 to-pink-500" />
+    </div>
+  );
+}
+```
+
+### Progress
+
+```tsx
+import { Progress } from "@iamrraj/drk-ui-components";
+import { useState, useEffect } from "react";
+
+function UploadProgress() {
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setProgress((prev) => (prev >= 100 ? 0 : prev + 10));
+    }, 500);
+    return () => clearInterval(timer);
+  }, []);
+
+  return (
+    <div className="w-full max-w-md">
+      <Progress value={progress} showLabel size="lg" />
+    </div>
+  );
+}
+```
+
+### Alert
+
+```tsx
+import { Alert } from "@iamrraj/drk-ui-components";
+import { useState } from "react";
+
+function Notifications() {
+  const [showAlert, setShowAlert] = useState(true);
+
+  return (
+    <div className="space-y-4">
+      <Alert variant="success" title="Success!">
+        Your profile has been updated successfully.
+      </Alert>
+
+      <Alert variant="error" dismissible onDismiss={() => setShowAlert(false)}>
+        An error occurred while processing your request.
+      </Alert>
+
+      <Alert variant="warning" title="Warning">
+        Your session will expire in 5 minutes.
+      </Alert>
+
+      <Alert variant="info">
+        New features are now available. Check them out!
+      </Alert>
+    </div>
+  );
+}
+```
+
+### Checkbox
+
+```tsx
+import { Checkbox } from "@iamrraj/drk-ui-components";
+import { useState } from "react";
+
+function Settings() {
+  const [notifications, setNotifications] = useState(false);
+  const [newsletter, setNewsletter] = useState(true);
+
+  return (
+    <div className="space-y-4">
+      <Checkbox
+        checked={notifications}
+        onChange={setNotifications}
+        label="Enable notifications"
+        helperText="Receive email notifications for updates"
+      />
+      <Checkbox
+        checked={newsletter}
+        onChange={setNewsletter}
+        label="Subscribe to newsletter"
+      />
+    </div>
+  );
+}
+```
+
+### Radio
+
+```tsx
+import { Radio } from "@iamrraj/drk-ui-components";
+import { useState } from "react";
+
+function PaymentMethod() {
+  const [method, setMethod] = useState("card");
+
+  return (
+    <div className="space-y-3">
+      <Radio
+        name="payment"
+        value="card"
+        checked={method === "card"}
+        onChange={setMethod}
+        label="Credit Card"
+        helperText="Pay with Visa, MasterCard, or AmEx"
+      />
+      <Radio
+        name="payment"
+        value="paypal"
+        checked={method === "paypal"}
+        onChange={setMethod}
+        label="PayPal"
+      />
+      <Radio
+        name="payment"
+        value="bank"
+        checked={method === "bank"}
+        onChange={setMethod}
+        label="Bank Transfer"
+      />
+    </div>
+  );
+}
+```
+
+### Divider
+
+```tsx
+import { Divider } from "@iamrraj/drk-ui-components";
+
+function Content() {
+  return (
+    <div>
+      <section>Top Content</section>
+      <Divider />
+      <section>Bottom Content</section>
+
+      {/* Divider with text */}
+      <Divider text="OR" />
+
+      {/* Vertical divider */}
+      <div className="flex items-center gap-4">
+        <button>Left</button>
+        <Divider orientation="vertical" className="h-8" />
+        <button>Right</button>
+      </div>
+    </div>
+  );
+}
+```
+
+### Textarea
+
+```tsx
+import { Textarea } from "@iamrraj/drk-ui-components";
+import { useState } from "react";
+
+function FeedbackForm() {
+  const [feedback, setFeedback] = useState("");
+
+  return (
+    <Textarea
+      label="Your Feedback"
+      placeholder="Tell us what you think..."
+      value={feedback}
+      onChange={(e) => setFeedback(e.target.value)}
+      rows={5}
+      helperText="Maximum 500 characters"
+      required
+    />
+  );
+}
+```
+
+### Slider
+
+```tsx
+import { Slider } from "@iamrraj/drk-ui-components";
+import { useState } from "react";
+
+function VolumeControl() {
+  const [volume, setVolume] = useState(50);
+
+  return (
+    <div className="w-full max-w-md">
+      <Slider
+        label="Volume"
+        value={volume}
+        onChange={setVolume}
+        min={0}
+        max={100}
+        step={5}
+        showValue
+      />
+    </div>
+  );
+}
+```
+
+### Accordion
+
+```tsx
+import { Accordion } from "@iamrraj/drk-ui-components";
+
+function FAQSection() {
+  const faqItems = [
+    {
+      id: "1",
+      title: "What is DRK UI Components?",
+      content:
+        "A comprehensive React component library with 32+ production-ready components built with TypeScript and Tailwind CSS.",
+    },
+    {
+      id: "2",
+      title: "How do I install it?",
+      content: "Run: npm install @iamrraj/drk-ui-components",
+    },
+    {
+      id: "3",
+      title: "Is it free to use?",
+      content: "Yes! It's completely free and open-source under the MIT license.",
+    },
+  ];
+
+  return (
+    <div className="max-w-2xl mx-auto">
+      <h2 className="text-2xl font-bold mb-4">Frequently Asked Questions</h2>
+      <Accordion items={faqItems} />
+    </div>
+  );
+}
+```
+
+### Tabs
+
+```tsx
+import { Tabs } from "@iamrraj/drk-ui-components";
+import { BiHome, BiUser, BiChart } from "react-icons/bi";
+import { useState } from "react";
+
+function Dashboard() {
+  const [activeTab, setActiveTab] = useState("overview");
+
+  const tabs = [
+    { id: "overview", label: "Overview", icon: <BiHome /> },
+    { id: "users", label: "Users", icon: <BiUser /> },
+    { id: "analytics", label: "Analytics", icon: <BiChart /> },
+    { id: "disabled", label: "Disabled", disabled: true },
+  ];
+
+  return (
+    <div>
+      <Tabs tabs={tabs} activeTab={activeTab} onChange={setActiveTab} />
+
+      <div className="p-6">
+        {activeTab === "overview" && <div>Overview content</div>}
+        {activeTab === "users" && <div>Users content</div>}
+        {activeTab === "analytics" && <div>Analytics content</div>}
+      </div>
+    </div>
+  );
+}
+```
+
+### Pagination
+
+```tsx
+import { Pagination } from "@iamrraj/drk-ui-components";
+import { useState } from "react";
+
+function DataList() {
+  const [currentPage, setCurrentPage] = useState(1);
+  const totalPages = 20;
+
+  return (
+    <div>
+      {/* Your data content */}
+      <div className="my-8">
+        {/* Data items for page {currentPage} */}
+      </div>
+
+      <div className="flex justify-center">
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
+      </div>
+    </div>
+  );
+}
+```
+
+### Table
+
+```tsx
+import { Table, Badge } from "@iamrraj/drk-ui-components";
+import type { TableColumn } from "@iamrraj/drk-ui-components";
+
+function UserTable() {
+  const users = [
+    { id: 1, name: "Alice Johnson", role: "Developer", status: "Active", projects: 12 },
+    { id: 2, name: "Bob Smith", role: "Designer", status: "Active", projects: 8 },
+    { id: 3, name: "Carol White", role: "Manager", status: "Away", projects: 15 },
+  ];
+
+  const columns: TableColumn<typeof users[0]>[] = [
+    {
+      key: "name",
+      header: "Name",
+      sortable: true,
+    },
+    {
+      key: "role",
+      header: "Role",
+      sortable: true,
+    },
+    {
+      key: "status",
+      header: "Status",
+      sortable: false,
+      render: (user) => (
+        <Badge variant={user.status === "Active" ? "green" : "yellow"}>
+          {user.status}
+        </Badge>
+      ),
+    },
+    {
+      key: "projects",
+      header: "Projects",
+      sortable: true,
+    },
+  ];
+
+  return (
+    <div className="overflow-hidden rounded-xl border">
+      <Table data={users} columns={columns} striped hoverable />
     </div>
   );
 }
@@ -656,6 +1196,41 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 MIT © DRK
 
 ## Changelog
+
+### v1.0.7
+
+- **Enhanced Sidebar with User Menu Dropdown** - Added `userMenuItems` prop
+- User dropdown at bottom shows profile info (name, email, role)
+- Custom menu items with icons and destructive styling support
+- Portal rendering for user dropdown menu
+- Click outside to close functionality
+- Smooth animations and transitions
+
+### v1.0.6
+
+- **15 New Components Added!**
+- **Sidebar** - Collapsible navigation with nested menus, badges, and user section
+- **Spinner** - Loading spinner with 4 sizes (sm, md, lg, xl)
+- **Skeleton** - Loading placeholder with pulse animation
+- **Avatar** - User avatar with image, initials, and icon fallback
+- **Progress** - Progress bar with percentage display
+- **Alert** - Alert/banner with 4 variants (info, success, warning, error)
+- **Checkbox** - Checkbox input with label and helper text
+- **Radio** - Radio button with label and helper text
+- **Textarea** - Multi-line text input with validation
+- **Slider** - Range slider for numeric inputs
+- **Accordion** - Collapsible content panels
+- **Tabs** - Tab navigation with icons and disabled states
+- **Pagination** - Page navigation with ellipsis
+- **Table** - Sortable data table with custom rendering
+- **Divider** - Content separator (horizontal/vertical)
+- Now 32+ production-ready components!
+
+### v1.0.5
+
+- Fixed import statements in README (removed double `@iamrraj/@iamrraj`)
+- Added beautiful SVG component preview visualization
+- Corrected CSS and Toast import paths
 
 ### v1.0.4
 

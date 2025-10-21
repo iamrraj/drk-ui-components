@@ -2,6 +2,98 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.7] - 2025-10-20
+
+### Enhanced - Sidebar Component
+
+- **User Menu Dropdown** - Added `userMenuItems` prop for custom user menu at bottom
+  - Portal rendering for z-index safety
+  - User info header showing name, email, and role badge
+  - Custom menu items with icons and onClick handlers
+  - Support for `destructive` styling (red color for logout/delete actions)
+  - `divider` prop to separate menu sections
+  - Click outside to close functionality
+  - Smooth fade-in and slide animations
+  - TypeScript interfaces: `UserMenuItem` added
+
+### Changed
+
+- Sidebar now supports both default menu items (Settings/Logout) AND custom `userMenuItems`
+- If `userMenuItems` is provided, it replaces the default Settings/Logout options
+- Enhanced Sidebar example in README with full userMenuItems demonstration
+
+## [1.0.6] - 2025-10-18
+
+### Added - Major Component Expansion! 🎉
+
+This is the BIGGEST update yet - we've added **15 new production-ready components**!
+
+**New Navigation Components:**
+- **Sidebar** - Professional collapsible sidebar with nested menus, logo, user profile, and settings
+  - Supports unlimited nested menu levels
+  - URL navigation and active state management
+  - Badge/count indicators
+  - User section with avatar, name, email
+  - Settings and logout options
+  - Smooth collapse animation
+- **Pagination** - Page navigation with customizable display
+- **Tabs** - Tab navigation with icons and disabled states
+
+**New Form Components:**
+- **Checkbox** - Checkbox with label and helper text
+- **Radio** - Radio button with label and helper text
+- **Textarea** - Multi-line text input with validation
+- **Slider** - Range slider for numeric inputs
+
+**New Loading & Feedback:**
+- **Spinner** - Loading spinner (4 sizes: sm, md, lg, xl)
+- **Skeleton** - Loading placeholder with pulse animation
+- **Progress** - Progress bar with percentage display
+- **Alert** - Alert/banner (info, success, warning, error variants)
+
+**New Display Components:**
+- **Avatar** - User avatar with image, initials, or icon fallback
+- **Divider** - Content separator (horizontal/vertical with optional text)
+
+**New Layout Components:**
+- **Accordion** - Collapsible content panels with single/multiple open support
+
+**New Data Components:**
+- **Table** - Data table with sorting, custom rendering, and row actions
+
+### Enhanced
+
+- **TooltipWrapper** - Added `className` and `tooltipClassName` props for complete customization
+
+### Features
+
+- All components support custom className for full Tailwind CSS customization
+- Complete TypeScript definitions for all new components
+- Comprehensive JSDoc documentation with examples
+- Accessibility features (ARIA attributes, keyboard navigation)
+- Responsive and mobile-friendly
+- Tree-shakeable imports
+
+### Documentation
+
+- Updated README with all 32+ components
+- Added detailed examples for each new component
+- Updated component count from 17+ to 32+
+- Enhanced feature list and SVG preview
+
+## [1.0.5] - 2025-10-18
+
+### Fixed
+
+- Corrected import statements in README - removed double `@iamrraj/@iamrraj` references
+- Fixed CSS import path: `@iamrraj/drk-ui-components/dist/index.css`
+- Fixed Toast import path: `@iamrraj/drk-ui-components`
+
+### Added
+
+- Beautiful SVG component preview visualization in README
+- Shows Input, Dropdown, Search, Multi-Select, Buttons, Badges, and Toggle components
+
 ## [1.0.4] - 2025-10-18
 
 ### Enhanced

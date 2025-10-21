@@ -277,8 +277,9 @@ const CustomMultiSelect: React.FC<CustomMultiSelectProps> = ({
       <Button
         onClick={toggleDropdown}
         className={`${
-          classes || "bg-white"
-        } border shadow-sm focus:border-primary-500 h-10 py-2 w-full border-gray-300 text-black text-left rounded-lg focus:outline-none flex items-center justify-between`}
+          classes ||
+          "bg-white rounded-lg shadow-sm focus-within:border-primary-500 border-gray-300"
+        } border  focus:border-primary-500 h-10 py-2 w-full  text-black text-left  focus:outline-none flex items-center justify-between`}
       >
         <p
           className={`${
@@ -326,7 +327,9 @@ const CustomMultiSelect: React.FC<CustomMultiSelectProps> = ({
                       disabled={!multiple}
                       className="cursor-pointer"
                     />
-                    <label className="cursor-pointer flex-1">{option.name}</label>
+                    <label className="cursor-pointer flex-1">
+                      {option.name}
+                    </label>
                   </Card>
                 ))
               ) : (

@@ -1,6 +1,6 @@
 {
   "name": "@iamrraj/drk-ui-components",
-  "version": "1.0.4",
+  "version": "1.0.8",
   "type": "module",
   "description": "A comprehensive React component library built with TypeScript and Tailwind CSS. Accessible, customizable, and production-ready components.",
   "main": "./dist/index.js",

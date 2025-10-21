@@ -88,6 +88,11 @@ export interface InputProps {
    * Tab index for keyboard navigation
    */
   tabIndex?: number;
+
+  /**
+   * Additional attributes for the input element
+   */
+  inputProps?: React.InputHTMLAttributes<HTMLInputElement>;
 }
 
 /**
@@ -147,6 +152,7 @@ const Input: React.FC<InputProps> = ({
   min,
   disabled = false,
   tabIndex,
+  inputProps,
 }) => {
   return (
     <div className={`flex flex-col ${className}`}>
@@ -171,7 +177,8 @@ const Input: React.FC<InputProps> = ({
         maxLength={maxLength ? maxLength : undefined}
         onChange={onChange}
         tabIndex={tabIndex}
-        className="border placeholder:text-gray-500 border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-200"
+        className="border placeholder:text-gray-500 border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500"
+        {...inputProps}
       />
       {helpText && <p className="mt-1 text-sm text-gray-500">{helpText}</p>}
     </div>
