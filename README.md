@@ -23,6 +23,10 @@ Comprehensive documentation with interactive examples, API reference, and usage 
 
 🎨 **Tailwind CSS Support** - Full customization with utility classes
 
+🧱 **Variant-Rich Primitives** - Buttons, inputs, cards, and badges ship with polished variants and size controls
+
+🧊 **Layout Utilities** - Re-usable `Stack` and `cn` helpers for building consistent spacing and class composition
+
 🔧 **TypeScript First** - Complete type definitions for better DX
 
 ♿ **Accessible** - ARIA compliant and keyboard navigable
@@ -42,6 +46,8 @@ Comprehensive documentation with interactive examples, API reference, and usage 
 🎪 **Form Components** - Checkboxes, radios, and more
 
 🚀 **Lightweight** - Only ~50 kB package size for fast installations
+
+🛠 **Productivity Hooks** - Ready-to-use `useDisclosure`, `useMediaQuery`, and color scheme detection
 
 ## Installation
 
@@ -92,10 +98,10 @@ Install Tailwind CSS v4 and the PostCSS plugin:
 npm install -D tailwindcss@4 @tailwindcss/postcss
 ```
 
-Update your `postcss.config.js`:
+Create or update `postcss.config.cjs`:
 
 ```javascript
-export default {
+module.exports = {
   plugins: {
     "@tailwindcss/postcss": {},
     autoprefixer: {},
@@ -133,7 +139,7 @@ export default {
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
-    "./node_modules/@iamrraj/@iamrraj/drk-ui-components/**/*.{js,jsx}", // Required!
+    "./node_modules/@iamrraj/drk-ui-components/**/*.{js,ts,jsx,tsx}",
   ],
 };
 ```
@@ -203,15 +209,14 @@ export default {
 - **Pagination** - Page navigation with customizable display
 - **Tabs** - Tab navigation with icons and disabled states
 
-### Modal Components
+### Overlay Components
 
 - **Modal** - Dialog with focus trapping
 - **ConfirmationModal** - Confirmation dialog for actions
-
-### Tooltip Components
-
+- **Sheet** - Sliding drawer with accessible structure and overlay
+- **Popover** - Triggered floating panel for quick menus and details
 - **Tooltip** - Info icon with hover tooltip
-- **TooltipWrapper** - Wrap any element with tooltip (now with className support)
+- **TooltipWrapper** - Wrap any element with tooltip support
 
 ### Toast Components
 
@@ -230,14 +235,21 @@ export default {
 
 - **Avatar** - User avatar with image, initials, or icon fallback
 - **Divider** - Content separator (horizontal/vertical)
+- **VisuallyHidden** - Accessibility helper for screen-reader-only content
 
 ### Layout Components
 
 - **Accordion** - Collapsible content panels with single/multiple open
+- **Stack** - Flex helper for directional spacing and alignment
 
 ### Data Display Components
 
 - **Table** - Data table with sorting and custom rendering
+
+### Utilities
+
+- **cn** - Lightweight class name merger exported for convenience
+- **Hooks** - `useDisclosure`, `useMediaQuery`, `usePrefersColorScheme`
 
 ## Complete Props Reference
 
@@ -249,22 +261,23 @@ For detailed prop information for all components, see [PROPS_REFERENCE.md](./PRO
 
 ```tsx
 import { Button } from "@iamrraj/drk-ui-components";
+import { BiDownload } from "react-icons/bi";
 
 function App() {
   return (
-    <>
-      <Button className="bg-primary-500 text-white px-4 py-2 rounded hover:bg-primary-600">
-        Click Me
+    <div className="flex flex-wrap gap-3">
+      <Button variant="primary" endIcon={<BiDownload className="h-4 w-4" />}>
+        Download
       </Button>
 
-      <Button
-        onClick={() => alert("Clicked!")}
-        className="bg-red-500 text-white px-4 py-2 rounded"
-        disabled
-      >
-        Disabled
+      <Button variant="outline" size="sm">
+        Outline
       </Button>
-    </>
+
+      <Button variant="ghost" loading loadingText="Saving...">
+        Save Changes
+      </Button>
+    </div>
   );
 }
 ```
@@ -273,21 +286,90 @@ function App() {
 
 ```tsx
 import { Input } from "@iamrraj/drk-ui-components";
+import { BiEnvelope, BiLock } from "react-icons/bi";
 import { useState } from "react";
 
 function LoginForm() {
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   return (
-    <Input
-      label="Email Address"
-      type="email"
-      placeholder="you@example.com"
-      value={email}
-      onChange={(e) => setEmail(e.target.value)}
-      required
-      helpText="We'll never share your email"
-    />
+    <div className="space-y-4">
+      <Input
+        name="email"
+        label="Email Address"
+        type="email"
+        placeholder="you@example.com"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        leftIcon={<BiEnvelope className="h-4 w-4" />}
+        helperText="We'll never share your email"
+      />
+
+      <Input
+        name="password"
+        type="password"
+        label="Password"
+        placeholder="Enter a strong password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        leftIcon={<BiLock className="h-4 w-4" />}
+        variant="filled"
+        inputSize="lg"
+        error={password.length > 0 && password.length < 12}
+        errorMessage="At least 12 characters required"
+      />
+    </div>
+  );
+}
+```
+
+### Stack
+
+```tsx
+import { Avatar, Heading, Paragraph, Stack } from "@iamrraj/drk-ui-components";
+
+function TeamMember() {
+  return (
+    <Stack direction="row" gap="lg" align="center" className="p-4">
+      <Avatar name="Rahul Raj" />
+      <div>
+        <Heading level={4}>Rahul Raj</Heading>
+        <Paragraph className="text-gray-500">
+          Building delightful frontend experiences.
+        </Paragraph>
+      </div>
+    </Stack>
+  );
+}
+```
+
+### Hooks
+
+```tsx
+import { useDisclosure, useMediaQuery, usePrefersColorScheme } from "@iamrraj/drk-ui-components";
+
+function ResponsivePanel() {
+  const disclosure = useDisclosure();
+  const isDesktop = useMediaQuery("(min-width: 1024px)");
+  const preferredScheme = usePrefersColorScheme();
+
+  return (
+    <div className="space-y-4">
+      <p className="text-sm text-gray-500">
+        Preferred color scheme: <strong>{preferredScheme}</strong>
+      </p>
+
+      <Button onClick={disclosure.toggle}>
+        {disclosure.isOpen ? "Hide" : "Show"} Filters
+      </Button>
+
+      {disclosure.isOpen && (
+        <Card className="p-4">
+          <Paragraph>This panel {isDesktop ? "sticks" : "slides"} based on viewport size.</Paragraph>
+        </Card>
+      )}
+    </div>
   );
 }
 ```
@@ -426,6 +508,86 @@ function DeleteButton() {
         message="Are you sure you want to delete this item? This action cannot be undone."
       />
     </>
+  );
+}
+```
+
+### Popover
+
+```tsx
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverClose,
+  Button,
+  Stack,
+} from "@iamrraj/drk-ui-components";
+
+function ActionsPopover() {
+  return (
+    <Popover>
+      <PopoverTrigger>
+        <Button variant="outline">More actions</Button>
+      </PopoverTrigger>
+      <PopoverContent className="space-y-1">
+        <Stack gap="xs">
+          <Button variant="ghost">Rename</Button>
+          <Button variant="ghost">Duplicate</Button>
+          <PopoverClose>
+            <Button variant="ghost" className="text-red-600">
+              Delete
+            </Button>
+          </PopoverClose>
+        </Stack>
+      </PopoverContent>
+    </Popover>
+  );
+}
+```
+
+### Sheet
+
+```tsx
+import {
+  Sheet,
+  SheetTrigger,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription,
+  SheetFooter,
+  SheetClose,
+  Button,
+  Input,
+  Stack,
+} from "@iamrraj/drk-ui-components";
+
+function FilterSheet() {
+  return (
+    <Sheet>
+      <SheetTrigger>
+        <Button>Open filters</Button>
+      </SheetTrigger>
+      <SheetContent side="right" className="max-w-md">
+        <SheetHeader>
+          <SheetTitle>Project filters</SheetTitle>
+          <SheetDescription>Refine the project list using tags and owners.</SheetDescription>
+        </SheetHeader>
+
+        <Stack gap="md" className="py-4">
+          <Input label="Owner" placeholder="Search teammates" />
+          <Input label="Tag" placeholder="Design, Backend, ..." />
+        </Stack>
+
+        <SheetFooter>
+          <SheetClose>
+            <Button variant="outline">Cancel</Button>
+          </SheetClose>
+          <Button variant="primary">Apply filters</Button>
+        </SheetFooter>
+      </SheetContent>
+    </Sheet>
   );
 }
 ```

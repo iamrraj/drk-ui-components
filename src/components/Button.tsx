@@ -1,4 +1,36 @@
-import React, { ButtonHTMLAttributes, MouseEvent } from "react";
+import { forwardRef, type ButtonHTMLAttributes, type ReactNode } from "react";
+import Spinner from "./Spinner";
+import { cn } from "../utils";
+
+export type ButtonVariant =
+  | "primary"
+  | "secondary"
+  | "outline"
+  | "ghost"
+  | "link"
+  | "destructive";
+
+export type ButtonSize = "sm" | "md" | "lg" | "icon";
+
+const variantClasses: Record<ButtonVariant, string> = {
+  primary:
+    "bg-primary-600 text-white shadow-sm hover:bg-primary-500 focus-visible:ring-primary-500",
+  secondary:
+    "bg-gray-100 text-gray-900 shadow-sm hover:bg-gray-200 focus-visible:ring-gray-300",
+  outline:
+    "border border-gray-300 bg-white text-gray-900 hover:bg-gray-50 focus-visible:ring-gray-200",
+  ghost: "text-gray-900 hover:bg-gray-100 focus-visible:ring-gray-200",
+  link: "text-primary-600 underline-offset-4 hover:underline focus-visible:ring-transparent",
+  destructive:
+    "bg-red-600 text-white shadow-sm hover:bg-red-500 focus-visible:ring-red-500",
+};
+
+const sizeClasses: Record<ButtonSize, string> = {
+  sm: "h-8 rounded-md px-3 text-sm",
+  md: "h-10 rounded-lg px-4 text-sm",
+  lg: "h-12 rounded-lg px-6 text-base",
+  icon: "h-10 w-10 rounded-lg p-0",
+};
 
 /**
  * Button Component Props
@@ -7,108 +39,142 @@ import React, { ButtonHTMLAttributes, MouseEvent } from "react";
  * @extends {ButtonHTMLAttributes<HTMLButtonElement>}
  *
  * @description
- * A versatile button component that supports custom styling, click handlers,
- * and all standard HTML button attributes. Fully compatible with Tailwind CSS.
- *
- * @example
- * ```tsx
- * // Basic button
- * <Button>Click Me</Button>
- *
- * // Button with custom classes
- * <Button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
- *   Submit
- * </Button>
- *
- * // Disabled button
- * <Button disabled onClick={() => console.log('Clicked')}>
- *   Can't Click
- * </Button>
- * ```
+ * A versatile button component with size, variant, icon, and loading support.
  */
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   /**
-   * The text content to display inside the button
    * @deprecated Use children instead
    */
   text?: string;
 
   /**
-   * Click event handler
-   * @param event - Mouse event from button click
+   * Visual variant of the button
+   * @default "primary"
    */
-  onClick?: (event: MouseEvent<HTMLButtonElement>) => void;
+  variant?: ButtonVariant;
 
   /**
-   * Additional CSS classes to apply (Tailwind CSS supported)
-   * @example "bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+   * Size of the button
+   * @default "md"
    */
-  className?: string;
+  size?: ButtonSize;
 
   /**
-   * Button type attribute
-   * @default "button"
-   */
-  type?: "button" | "submit" | "reset";
-
-  /**
-   * Disables the button if true
+   * Loading indicator state
    * @default false
    */
-  disabled?: boolean;
+  loading?: boolean;
 
   /**
-   * The content to display inside the button
+   * Optional text to show alongside the spinner (when loading)
    */
-  children?: React.ReactNode;
+  loadingText?: ReactNode;
+
+  /**
+   * Icon element rendered before the button content
+   */
+  startIcon?: ReactNode;
+
+  /**
+   * Icon element rendered after the button content
+   */
+  endIcon?: ReactNode;
+
+  /**
+   * Force the button to take full width
+   * @default false
+   */
+  fullWidth?: boolean;
 }
 
 /**
  * Button Component
- *
- * @component
- * @description
- * A reusable button component with full Tailwind CSS support and accessibility features.
- * Supports all standard HTML button attributes and can be customized with className prop.
- *
- * @param {ButtonProps} props - Component props
- * @returns {JSX.Element} Rendered button element
- *
- * @example
- * ```tsx
- * import { Button } from 'drk-ui-components';
- *
- * function MyComponent() {
- *   return (
- *     <Button
- *       className="bg-primary-500 text-white px-6 py-3 rounded-lg hover:bg-primary-600"
- *       onClick={() => alert('Clicked!')}
- *     >
- *       Click Me
- *     </Button>
- *   );
- * }
- * ```
  */
-const Button: React.FC<ButtonProps> = ({
-  children,
-  onClick,
-  className = "",
-  type = "button",
-  disabled = false,
-  ...props
-}) => {
-  return (
-    <button
-      type={type}
-      className={`cursor-pointer ${className}`}
-      onClick={onClick}
-      disabled={disabled}
-      {...props}
-    >
-      {children}
-    </button>
-  );
-};
+const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+  (
+    {
+      children,
+      text,
+      className,
+      type = "button",
+      disabled = false,
+      variant = "primary",
+      size = "md",
+      loading = false,
+      loadingText,
+      startIcon,
+      endIcon,
+      fullWidth = false,
+      ...props
+    },
+    ref,
+  ) => {
+    const content = children ?? text;
+
+    return (
+      <button
+        ref={ref}
+        type={type}
+        className={cn(
+          "relative inline-flex items-center justify-center gap-2 font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60",
+          sizeClasses[size],
+          variantClasses[variant],
+          {
+            "w-full": fullWidth,
+            "px-0": size === "icon",
+          },
+          className,
+        )}
+        disabled={disabled || loading}
+        aria-busy={loading}
+        data-variant={variant}
+        data-size={size}
+        {...props}
+      >
+        {loading && (
+          <span className="absolute inset-0 flex items-center justify-center gap-2">
+            <Spinner
+              size={size === "lg" ? "md" : "sm"}
+              color="border-current"
+            />
+            {loadingText && <span className="text-sm font-medium">{loadingText}</span>}
+          </span>
+        )}
+
+        <span
+          className={cn(
+            "inline-flex items-center justify-center gap-2",
+            {
+              "opacity-0": loading,
+              "gap-0": size === "icon",
+            },
+          )}
+        >
+          {startIcon && (
+            <span className="flex h-5 w-5 items-center justify-center">
+              {startIcon}
+            </span>
+          )}
+          {content && (
+            <span
+              className={cn({
+                "sr-only": size === "icon",
+              })}
+            >
+              {content}
+            </span>
+          )}
+          {endIcon && (
+            <span className="flex h-5 w-5 items-center justify-center">
+              {endIcon}
+            </span>
+          )}
+        </span>
+      </button>
+    );
+  },
+);
+
+Button.displayName = "Button";
 
 export default Button;

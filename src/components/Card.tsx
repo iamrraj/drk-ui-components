@@ -1,101 +1,146 @@
-import React, { ReactNode, HTMLAttributes } from "react";
+import { forwardRef, type HTMLAttributes, type ReactNode } from "react";
+import { cn } from "../utils";
+
+export type CardVariant = "elevated" | "outline" | "muted" | "ghost";
+export type CardPadding = "none" | "sm" | "md" | "lg";
+
+const variantClasses: Record<CardVariant, string> = {
+  elevated:
+    "bg-white shadow-md shadow-primary-500/5 border border-transparent",
+  outline: "bg-white border border-gray-200",
+  muted: "bg-gray-50 border border-transparent",
+  ghost: "bg-transparent border border-transparent",
+};
+
+const cardPadding: Record<CardPadding, string> = {
+  none: "p-0",
+  sm: "p-4",
+  md: "p-6",
+  lg: "p-8",
+};
+
+const segmentPadding: Record<CardPadding, string> = {
+  none: "px-0 py-0",
+  sm: "px-4 py-3",
+  md: "px-6 py-4",
+  lg: "px-8 py-5",
+};
 
 /**
  * Card Component Props
- *
- * @interface CardProps
- * @extends {HTMLAttributes<HTMLDivElement>}
- *
- * @description
- * Props for the Card component. Extends all standard HTML div attributes
- * and provides additional customization options.
- *
- * @example
- * ```tsx
- * <Card className="bg-white shadow-lg p-6 rounded-xl">
- *   <h2>Card Title</h2>
- *   <p>Card content goes here</p>
- * </Card>
- * ```
  */
 export interface CardProps extends HTMLAttributes<HTMLDivElement> {
-  /**
-   * The content to be rendered inside the Card
-   */
   children?: ReactNode;
-
   /**
-   * Additional CSS classes to apply (Tailwind CSS supported)
-   * @example "bg-white shadow-lg p-6 rounded-xl border border-gray-200"
+   * Visual variant of the card container
+   * @default "elevated"
    */
-  className?: string;
-
+  variant?: CardVariant;
   /**
-   * Unique identifier for the Card element
+   * Padding applied to the card and its sections
+   * @default "md"
    */
-  id?: string;
-
+  padding?: CardPadding;
   /**
-   * Optional click event handler for the Card
-   * @param e - React mouse event
+   * Adds hover and focus interactions (useful for clickable cards)
+   * @default false
    */
-  onClick?: (e: React.MouseEvent) => void;
+  interactive?: boolean;
+  /**
+   * Optional header region rendered before the card body
+   */
+  header?: ReactNode;
+  /**
+   * Optional footer region rendered after the card body
+   */
+  footer?: ReactNode;
+  /**
+   * Apply borders between header/body/footer when provided
+   * @default false
+   */
+  sectioned?: boolean;
+  /**
+   * Custom classes for individual regions
+   */
+  headerClassName?: string;
+  bodyClassName?: string;
+  footerClassName?: string;
 }
 
-/**
- * Card Component
- *
- * @component
- * @description
- * A versatile Card component for structuring content with full Tailwind CSS support.
- * Acts as a flexible container that can be styled with any Tailwind classes.
- * Perfect for creating panels, sections, or grouped content.
- *
- * @param {CardProps} props - Component props
- * @returns {JSX.Element} Rendered card element
- *
- * @example
- * ```tsx
- * import { Card } from 'drk-ui-components';
- *
- * function MyComponent() {
- *   return (
- *     <Card className="bg-white shadow-lg rounded-xl p-6 hover:shadow-xl transition-shadow">
- *       <h2 className="text-xl font-bold mb-4">Product Card</h2>
- *       <p className="text-gray-600">This is a product description</p>
- *     </Card>
- *   );
- * }
- * ```
- *
- * @example
- * ```tsx
- * // Clickable card
- * <Card
- *   className="cursor-pointer hover:bg-gray-50 p-4 rounded-lg border"
- *   onClick={() => console.log('Card clicked')}
- * >
- *   Click me!
- * </Card>
- * ```
- */
-const Card: React.FC<CardProps> = ({
-  children,
-  className = "",
-  id,
-  onClick,
-  ...rest
-}) => {
-  return (
-    <div
-      id={id}
-      className={className}
-      onClick={onClick}
-      {...rest}
-    >
-      {children}
-    </div>
-  );
-};
+const Card = forwardRef<HTMLDivElement, CardProps>(
+  (
+    {
+      children,
+      className,
+      variant = "elevated",
+      padding = "md",
+      interactive = false,
+      header,
+      footer,
+      sectioned = false,
+      headerClassName,
+      bodyClassName,
+      footerClassName,
+      ...props
+    },
+    ref,
+  ) => {
+    const hasStructuredContent = Boolean(header || footer || sectioned);
+
+    const rootPadding = hasStructuredContent ? "p-0" : cardPadding[padding];
+    const segmentSpacing = segmentPadding[padding];
+
+    return (
+      <div
+        ref={ref}
+        className={cn(
+          "relative rounded-xl text-gray-900",
+          variantClasses[variant],
+          interactive &&
+            "transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500",
+          rootPadding,
+          className,
+        )}
+        {...props}
+      >
+        {hasStructuredContent ? (
+          <>
+            {header && (
+              <div
+                className={cn(
+                  segmentSpacing,
+                  sectioned && "border-b border-gray-200",
+                  headerClassName,
+                )}
+              >
+                {header}
+              </div>
+            )}
+
+            <div className={cn(segmentSpacing, bodyClassName)}>{children}</div>
+
+            {footer && (
+              <div
+                className={cn(
+                  segmentSpacing,
+                  sectioned && "border-t border-gray-200",
+                  footerClassName,
+                )}
+              >
+                {footer}
+              </div>
+            )}
+          </>
+        ) : bodyClassName ? (
+          <div className={bodyClassName}>{children}</div>
+        ) : (
+          children
+        )}
+      </div>
+    );
+  },
+);
+
+Card.displayName = "Card";
 
 export default Card;

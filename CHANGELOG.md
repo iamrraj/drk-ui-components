@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.0] - 2025-10-21
+
+### Added
+
+- **Popover** component with trigger/content/close primitives for building contextual menus and inspectors
+- **Sheet** drawer with trigger, overlay, header/footer, and accessible title/description helpers
+- **Stack** layout utility for quick flex-based spacing and alignment patterns
+- **VisuallyHidden** accessibility helper for screen-reader-only content
+- Shared `cn` class name helper and exported `ClassValue` type for consumers
+- Hooks: `useDisclosure`, `useMediaQuery`, and `usePrefersColorScheme` for common state and media handling
+
+### Enhanced
+
+- **Button** now supports variants, sizes, icon slots, loading states, and full-width mode
+- **Input** gains variants, sizes, icon/addon support, and improved error handling
+- **Card** adds variants, padding controls, and structured header/footer slots
+- **Badge** includes appearance, size, radius, and dot indicator options
+- Barrel exports updated to surface new primitives and utility helpers
+
+### Tooling & Docs
+
+- Converted PostCSS config to CommonJS (`postcss.config.cjs`) for compatibility with Rollup/lilconfig
+- Updated README with new overlay section, feature highlights, and Popover/Sheet usage examples
+- Refreshed `PROPS_REFERENCE.md` with detailed entries for the new and expanded components
+
 ## [1.0.7] - 2025-10-20
 
 ### Enhanced - Sidebar Component

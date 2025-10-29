@@ -1,188 +1,183 @@
-import React from "react";
+import {
+  forwardRef,
+  useId,
+  type InputHTMLAttributes,
+  type ReactNode,
+} from "react";
+import { cn } from "../utils";
+
+export type InputVariant = "default" | "filled" | "unstyled";
+export type InputSize = "sm" | "md" | "lg";
+
+const wrapperBaseClasses = "flex items-center gap-2 transition";
+
+const focusRingClasses =
+  "rounded-lg border focus-within:ring-2 focus-within:ring-primary-500 focus-within:ring-offset-0";
+
+const variantClasses: Record<InputVariant, string> = {
+  default:
+    "border-gray-300 bg-white focus-within:border-primary-400 focus-within:bg-white",
+  filled:
+    "border-transparent bg-gray-100 focus-within:border-primary-300 focus-within:bg-white",
+  unstyled: "border-none bg-transparent px-0 focus-within:ring-0",
+};
+
+const sizeWrapperClasses: Record<InputSize, string> = {
+  sm: "h-9 px-3 text-sm",
+  md: "h-10 px-3 text-sm",
+  lg: "h-12 px-4 text-base",
+};
+
+const unstyledSizeWrapperClasses: Record<InputSize, string> = {
+  sm: "h-9 text-sm",
+  md: "h-10 text-sm",
+  lg: "h-12 text-base",
+};
+
+const sizeInputClasses: Record<InputSize, string> = {
+  sm: "text-sm",
+  md: "text-sm",
+  lg: "text-base",
+};
 
 /**
  * Input Component Props
- *
- * @interface InputProps
- *
- * @description
- * Props for the Input component with full customization support
- *
- * @example
- * ```tsx
- * <Input
- *   label="Email"
- *   type="email"
- *   placeholder="Enter your email"
- *   required
- *   className="mb-4"
- * />
- * ```
  */
-export interface InputProps {
-  /**
-   * Label text for the input field
-   */
+export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "size"> {
   label?: string;
-
-  /**
-   * Input type (text, password, email, number, date, etc.)
-   * @default "text"
-   */
-  type?: string;
-
-  /**
-   * Placeholder text
-   */
-  placeholder?: string;
-
-  /**
-   * Input value (for controlled components)
-   */
-  value?: string | number;
-
-  /**
-   * Change event handler
-   * @param event - Input change event
-   */
-  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
-
-  /**
-   * Additional CSS classes for the container (Tailwind CSS supported)
-   */
+  helperText?: string;
+  error?: boolean;
+  errorMessage?: string;
+  leftIcon?: ReactNode;
+  rightIcon?: ReactNode;
+  addonBefore?: ReactNode;
+  addonAfter?: ReactNode;
+  variant?: InputVariant;
+  inputSize?: InputSize;
   className?: string;
-
+  inputClassName?: string;
   /**
-   * Input name attribute
+   * @deprecated Extra props for the input element. Use standard props instead.
    */
-  name?: string;
-
-  /**
-   * Maximum length of input
-   */
-  maxLength?: number;
-
-  /**
-   * Marks the input as required
-   * @default false
-   */
-  required?: boolean;
-
-  /**
-   * Helper text displayed below the input
-   */
-  helpText?: string;
-
-  /**
-   * Minimum value (for date/number inputs)
-   */
-  min?: string;
-
-  /**
-   * Disables the input if true
-   * @default false
-   */
-  disabled?: boolean;
-
-  /**
-   * Tab index for keyboard navigation
-   */
-  tabIndex?: number;
-
-  /**
-   * Additional attributes for the input element
-   */
-  inputProps?: React.InputHTMLAttributes<HTMLInputElement>;
+  inputProps?: InputHTMLAttributes<HTMLInputElement>;
 }
 
-/**
- * Input Component
- *
- * @component
- * @description
- * A reusable input component with label, validation, and helper text support.
- * Fully styled with Tailwind CSS and supports all standard input types.
- *
- * @param {InputProps} props - Component props
- * @returns {JSX.Element} Rendered input element
- *
- * @example
- * ```tsx
- * import { Input } from 'drk-ui-components';
- *
- * function MyForm() {
- *   const [email, setEmail] = useState('');
- *
- *   return (
- *     <Input
- *       label="Email Address"
- *       type="email"
- *       placeholder="you@example.com"
- *       value={email}
- *       onChange={(e) => setEmail(e.target.value)}
- *       required
- *       helpText="We'll never share your email"
- *     />
- *   );
- * }
- * ```
- *
- * @example
- * ```tsx
- * // Date input with minimum date
- * <Input
- *   label="Select Date"
- *   type="date"
- *   min="2024-01-01"
- *   className="w-full"
- * />
- * ```
- */
-const Input: React.FC<InputProps> = ({
-  label,
-  type = "text",
-  placeholder,
-  value,
-  onChange,
-  className,
-  name,
-  maxLength,
-  required = false,
-  helpText,
-  min,
-  disabled = false,
-  tabIndex,
-  inputProps,
-}) => {
-  return (
-    <div className={`flex flex-col ${className}`}>
-      {label && (
-        <label
-          htmlFor={name}
-          className="block text-sm font-medium text-gray-700 mb-1"
+const Input = forwardRef<HTMLInputElement, InputProps>(
+  (
+    {
+      label,
+      helperText,
+      error = false,
+      errorMessage,
+      leftIcon,
+      rightIcon,
+      addonBefore,
+      addonAfter,
+      variant = "default",
+      inputSize = "md",
+      id,
+      name,
+      className,
+      inputClassName,
+      inputProps,
+      required,
+      disabled,
+      ...props
+    },
+    ref
+  ) => {
+    const generatedId = useId();
+    const inputId = id ?? name ?? generatedId;
+
+    const helperId = helperText ? `${inputId}-helper` : undefined;
+    const errorId = error && errorMessage ? `${inputId}-error` : undefined;
+    const describedBy =
+      [helperId, errorId].filter(Boolean).join(" ") || undefined;
+
+    const wrapperSizeClass =
+      variant === "unstyled"
+        ? unstyledSizeWrapperClasses[inputSize]
+        : sizeWrapperClasses[inputSize];
+
+    return (
+      <div className={cn("flex flex-col gap-1", className)}>
+        {label && (
+          <label
+            htmlFor={inputId}
+            className="text-sm font-medium text-gray-700"
+          >
+            {label}
+            {required && <span className="ml-1 text-red-500">*</span>}
+          </label>
+        )}
+
+        <div
+          className={cn(
+            wrapperBaseClasses,
+            wrapperSizeClass,
+            variant === "unstyled" ? variantClasses[variant] : focusRingClasses,
+            variant !== "unstyled" && variantClasses[variant],
+            disabled && "cursor-not-allowed opacity-60",
+            error &&
+              variant !== "unstyled" &&
+              "border-red-500 focus-within:ring-red-500"
+          )}
         >
-          {label}
-          {required && <span className="text-red-500 ml-1">*</span>}
-        </label>
-      )}
-      <input
-        id={name}
-        disabled={disabled}
-        type={type}
-        data-testid={`${name}-input`}
-        placeholder={placeholder}
-        value={value}
-        name={name}
-        min={min ?? undefined}
-        maxLength={maxLength ? maxLength : undefined}
-        onChange={onChange}
-        tabIndex={tabIndex}
-        className="border placeholder:text-gray-500 border-gray-300 px-3 py-2 rounded-lg focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500"
-        {...inputProps}
-      />
-      {helpText && <p className="mt-1 text-sm text-gray-500">{helpText}</p>}
-    </div>
-  );
-};
+          {leftIcon && (
+            <span className="flex items-center text-gray-500">{leftIcon}</span>
+          )}
+
+          {addonBefore && (
+            <span className="min-w-max text-sm text-gray-500">
+              {addonBefore}
+            </span>
+          )}
+
+          <input
+            ref={ref}
+            id={inputId}
+            name={name}
+            aria-invalid={error || undefined}
+            aria-describedby={describedBy}
+            required={required}
+            disabled={disabled}
+            className={cn(
+              "flex-1 bg-transparent text-gray-900 placeholder:text-gray-500 focus:outline-none",
+              sizeInputClasses[inputSize],
+              variant === "unstyled" && "px-0",
+              inputClassName
+            )}
+            {...inputProps}
+            {...props}
+          />
+
+          {addonAfter && (
+            <span className="min-w-max text-sm text-gray-500">
+              {addonAfter}
+            </span>
+          )}
+
+          {rightIcon && (
+            <span className="flex items-center text-gray-500">{rightIcon}</span>
+          )}
+        </div>
+
+        {helperText && (
+          <p id={helperId} className="text-xs text-gray-500">
+            {helperText}
+          </p>
+        )}
+
+        {error && errorMessage && (
+          <p id={errorId} className="text-xs text-red-500">
+            {errorMessage}
+          </p>
+        )}
+      </div>
+    );
+  }
+);
+
+Input.displayName = "Input";
 
 export default Input;

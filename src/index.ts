@@ -18,6 +18,18 @@
 // Import styles
 import "./styles/index.css";
 
+// Utilities
+export { cn } from "./utils";
+export type { ClassValue } from "./utils";
+
+// Hooks
+export { useDisclosure, useMediaQuery, usePrefersColorScheme } from "./hooks";
+export type {
+  UseDisclosureProps,
+  UseDisclosureReturn,
+  ColorScheme,
+} from "./hooks";
+
 // Basic Components
 export { default as Button } from "./components/Button";
 export type { ButtonProps } from "./components/Button";
@@ -42,6 +54,8 @@ export type { SpanProps } from "./components/Span";
 
 export { default as Badge } from "./components/Badge";
 export type { BadgeProps, BadgeVariant } from "./components/Badge";
+export { default as VisuallyHidden } from "./components/VisuallyHidden";
+export type { VisuallyHiddenProps } from "./components/VisuallyHidden";
 
 // Interactive Components
 export { default as Toggle } from "./components/Toggle";
@@ -72,6 +86,21 @@ export type {
   TooltipWrapperProps,
   TooltipPosition,
 } from "./components/TooltipWrapper";
+
+export {
+  default as Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverClose,
+} from "./components/Popover";
+export type {
+  PopoverProps,
+  PopoverTriggerProps,
+  PopoverContentProps,
+  PopoverCloseProps,
+  PopoverSide,
+  PopoverAlign,
+} from "./components/Popover";
 
 // Toast Components
 export { Toast, ToastProvider, useToast } from "./components/Toast";
@@ -133,6 +162,37 @@ export type { TabsProps, TabItem } from "./components/Tabs";
 // Layout Components
 export { default as Accordion } from "./components/Accordion";
 export type { AccordionProps, AccordionItem } from "./components/Accordion";
+
+export { default as Stack } from "./components/Stack";
+export type {
+  StackProps,
+  StackDirection,
+  StackGap,
+  StackAlign,
+  StackJustify,
+} from "./components/Stack";
+
+export {
+  default as Sheet,
+  SheetTrigger,
+  SheetContent,
+  SheetClose,
+  SheetHeader,
+  SheetFooter,
+  SheetTitle,
+  SheetDescription,
+} from "./components/Sheet";
+export type {
+  SheetProps,
+  SheetTriggerProps,
+  SheetContentProps,
+  SheetCloseProps,
+  SheetHeaderProps,
+  SheetFooterProps,
+  SheetTitleProps,
+  SheetDescriptionProps,
+  SheetSide,
+} from "./components/Sheet";
 
 // Data Display Components
 export { default as Table } from "./components/Table";
